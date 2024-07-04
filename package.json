@@ -1,0 +1,23 @@
+{
+  "name": "rest-api-database",
+  "version": "1.0.0",
+  "description": "A REST API with sql database demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YashM150/REST-API-Database.git"
+  },
+  "author": "Yash Moharil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YashM150/REST-API-Database/issues"
+  },
+  "homepage": "https://github.com/YashM150/REST-API-Database#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
