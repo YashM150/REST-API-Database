@@ -96,6 +96,7 @@ app.post(('/api/user'),(req,res)=>{
             }
             id1=results;
         });
+        console.log(id1);
         const query1 = 'INSERT INTO `apim`.`demo` (`ID`, `name`, `gender`, `bloodgroup`) VALUES (?, "?", "?", "?")';
         db.query(query1,(id1+1),[name,gender,bloodgroup], (err,result) => {
             if (err) {
@@ -113,6 +114,19 @@ app.post('/test', (req, res) => {
     res.send('Test route');
 });
 
+app.get('/alluserscount',(req,res)=>{
+    const query = 'select count(*) from demo';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.send(results);
+            
+        });
+       
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
