@@ -83,30 +83,33 @@ app.route('/api/user/:id')
 // insert a city
 app.post(('/api/user'),(req,res)=>{
         const {name,gender,bloodgroup}=req.body;
-        console.log('Name:', name); // Access each key
-        console.log('Email:', gender);
-        console.log('Age:', bloodgroup);
-        const query = 'select count(*) from demo';
-        let id1=0;
-        db.query(query, (err, results) => {
+        const query = 'select count(*) as cnt from demo';
+        
+        db.query(query,(err,results) => {
             if (err) {
-                console.error('Error executing query:', err);
+                console.error('Error executing query first:', err);
                 res.status(500).send('Internal Server Error');
                 return;
             }
-            id1=results;
+            const firstrow = results[0].cnt; 
+            const id1=firstrow+1;
+            
+            console.log(id1);
+            console.log(name);
+            console.log(gender);
+            console.log(bloodgroup);
+            const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
+            db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
+                if (err) {
+                    console.error('Error executing query:', err);
+                    res.status(500).send('Internal Server Error');
+                    return;
+                }
+                res.send('User Entered');
+            });
         });
-        console.log(id1);
-        const query1 = 'INSERT INTO `apim`.`demo` (`ID`, `name`, `gender`, `bloodgroup`) VALUES (?, "?", "?", "?")';
-        db.query(query1,(id1+1),[name,gender,bloodgroup], (err,result) => {
-            if (err) {
-                console.error('Error executing query:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-            res.send('User Entered');
-        });
-
+        // const [result]=db.execute('select count(*) as cnt from demo');
+        
 });
 
 app.post('/test', (req, res) => {
@@ -115,16 +118,23 @@ app.post('/test', (req, res) => {
 });
 
 app.get('/alluserscount',(req,res)=>{
-    const query = 'select count(*) from demo';
+        const query = 'select count(*) as cnt from demo';
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
                 res.status(500).send('Internal Server Error');
                 return;
             }
-            res.send(results);
-            
+            try {
+                const firstrow=results[0].cnt;
+                console.log(firstrow);
+                res.send(`${firstrow}`);
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }            
         });
+        // const [result]=db.execute('select count(*) as cnt from demo');
+        // console.log(result[0].cnt);
        
 })
 
