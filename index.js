@@ -131,31 +131,65 @@ app.route('/api/user/:id')
 // insert a user
 app.post(('/api/user'),(req,res)=>{
         const {name,gender,bloodgroup}=req.body;
-        const query = 'select count(*) as cnt from demo';
-        
-        db.query(query,(err,results) => {
-            if (err) {
-                console.error('Error executing query first:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-            const firstrow = results[0].cnt; 
-            const id1=firstrow+1;
+        let difference;
+        const query0 = 'SELECT ID FROM demo ORDER BY ID ASC LIMIT 1';
 
-            console.log(id1);
-            console.log(name);
-            console.log(gender);
-            console.log(bloodgroup);
-            const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
-            db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
-                if (err) {
-                    console.error('Error executing query:', err);
-                    res.status(500).send('Internal Server Error');
-                    return;
-                }
-                res.send('User Entered');
-            });
-        });
+        db.query(query0,(err,diff)=>{
+            const query = 'select count(*) as cnt from demo';
+            difference=diff[0].ID;
+            if(difference==1){
+                db.query(query,(err,results) => {
+                    if (err) {
+                        console.error('Error executing query first:', err);
+                        res.status(500).send('Internal Server Error');
+                        return;
+                    }
+                    const firstrow = results[0].cnt; 
+                    const id1=firstrow+difference;
+    
+                    console.log(id1);
+                    console.log(name);
+                    console.log(gender);
+                    console.log(bloodgroup);
+                    const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
+                    db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
+                        if (err) {
+                            console.error('Error executing query:', err);
+                            res.status(500).send('Internal Server Error');
+                            return;
+                        }
+                        res.send('User Entered');
+                    });
+                });
+            }
+            else{
+                db.query(query,(err,results) => {
+                    if (err) {
+                        console.error('Error executing query first:', err);
+                        res.status(500).send('Internal Server Error');
+                        return;
+                    }
+                    const firstrow = results[0].cnt; 
+                    const id1=firstrow+difference+1;
+    
+                    console.log(id1);
+                    console.log(name);
+                    console.log(gender);
+                    console.log(bloodgroup);
+                    const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
+                    db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
+                        if (err) {
+                            console.error('Error executing query:', err);
+                            res.status(500).send('Internal Server Error');
+                            return;
+                        }
+                        res.send('User Entered');
+                    });
+                });
+            }
+            
+        })
+        
         // const [result]=db.execute('select count(*) as cnt from demo');
         
 });
@@ -183,6 +217,26 @@ app.get('/alluserscount',(req,res)=>{
         });
         // const [result]=db.execute('select count(*) as cnt from demo');
         // console.log(result[0].cnt);
+       
+})
+
+//updated user count from start
+app.get('/alluserscountstart',(req,res)=>{
+    const query = 'SELECT ID FROM demo ORDER BY ID ASC LIMIT 1';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        try {
+            const firstrow=results[0].ID;
+            console.log(firstrow);
+            res.send(`${firstrow}`);
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+        }            
+    });
        
 })
 
