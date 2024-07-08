@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require('./db');
+const db = require('./config/db');
 
 const app= express();
 
@@ -51,7 +51,7 @@ app.route('/api/user/:id')
         });
     })
 
-    // Delete a user
+    // Delete a user old
     .delete((req,res)=>{
         const id = req.params.id;
         const query = 'delete from demo where id=?';
@@ -69,6 +69,8 @@ app.route('/api/user/:id')
             res.send('User deleted.');
         });
     })
+
+    
 
     // Partially update a user    
     .patch((req,res)=>{
@@ -121,16 +123,25 @@ app.route('/api/user/:id')
             if(results.affectedRows==0)
             {
                 console.error('user already deleted',err);
-                res.status(404).send('User already Deleted');
+                res.status(404).send('User not in the database. In');
+                const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
+                db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
+                    if (err) {
+                        console.error('Error executing query:', err);
+                        res.status(500).send('Internal Server Error');
+                        return;
+                    }
+                    res.send('User Entered');
+                });
             }
             res.send('User updated.');
         });
     })
 
 
-// insert a user
+// insert a user old
 app.post(('/api/user'),(req,res)=>{
-        const {name,gender,bloodgroup}=req.body;
+        const {name,gender,bloodgroup,username}=req.body;
         let difference;
         const query0 = 'SELECT ID FROM demo ORDER BY ID ASC LIMIT 1';
 
@@ -151,8 +162,8 @@ app.post(('/api/user'),(req,res)=>{
                     console.log(name);
                     console.log(gender);
                     console.log(bloodgroup);
-                    const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
-                    db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
+                    const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup,username) VALUES (?, ?, ?, ?,?)';
+                    db.query(query1,[id1,name,gender,bloodgroup,username], (err,result) => {
                         if (err) {
                             console.error('Error executing query:', err);
                             res.status(500).send('Internal Server Error');
@@ -176,8 +187,8 @@ app.post(('/api/user'),(req,res)=>{
                     console.log(name);
                     console.log(gender);
                     console.log(bloodgroup);
-                    const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup) VALUES (?, ?, ?, ?)';
-                    db.query(query1,[id1,name,gender,bloodgroup], (err,result) => {
+                    const query1 = 'INSERT INTO demo (ID, name, gender, bloodgroup,username) VALUES (?, ?, ?, ?,?)';
+                    db.query(query1,[id1,name,gender,bloodgroup,username], (err,result) => {
                         if (err) {
                             console.error('Error executing query:', err);
                             res.status(500).send('Internal Server Error');
@@ -194,11 +205,48 @@ app.post(('/api/user'),(req,res)=>{
         
 });
 
+app.post
+
+//Register user with the post request
+app.post(('/api/registeruser'),(req,res)=>{
+    const {username,password}=req.body;
+    const query= 'INSERT INTO login (username,password) VALUES (?, ?);';
+    db.query(query,[username,password], (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.send('User Added.');
+    });
+
+})
+
+//Get all login information
+app.get(('/api/getuserlogin'),(req,res)=>{
+    const query= 'select * from login';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        if(results.affectedRows==0)
+        {
+            console.error('User not found!', err);
+            res.status(404).send('User not found');
+        }
+        res.json(results);
+    });
+})
+
+// Test Post api
 app.post('/test', (req, res) => {
     console.log('Test route body:', req.body);
     res.send('Test route');
 });
 
+// Get request to get all users count
 app.get('/alluserscount',(req,res)=>{
         const query = 'select count(*) as cnt from demo';
         db.query(query, (err, results) => {
@@ -239,6 +287,13 @@ app.get('/alluserscountstart',(req,res)=>{
     });
        
 })
+
+
+// OAuth Authentication GET API
+app.get('/',(req,res)=>{
+    res.send('<a href="/auth/google"> Authentication with Google</a>');
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
