@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/usermodels');
-const AuthUser=require('../models/crudmodel')
+
 
 const authController = {
 
@@ -50,10 +50,7 @@ const authController = {
       });
     });
   },
-  user:(req,res)=>{
-    const token= req.body;
-    
-  }
+  
 };
 
 module.exports = authController;
