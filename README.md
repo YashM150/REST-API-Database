@@ -13,3 +13,16 @@ Login Table:
     |   Nisha345    |   zxcvb       |
     |   Anshuk234   |   asdfg       |
     ---------------------------------
+
+
+    Tasks:
+    1. Get all Users.
+    2. get particular User.
+    3. Add a user.
+    4. Delete a user.
+    5. Partially Update a user.
+    6. Update a user.
+
+    Implement :
+    1. JWT
+    2. OAuth
