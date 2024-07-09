@@ -11,6 +11,7 @@ This project is a simple demonstration of how to create a RESTful API using Mysq
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
+- [Other Important Points](#Other Important Points)
 
 ## Installation
 ### Postman
@@ -356,7 +357,7 @@ Login Table:
 
 
     Tasks completed:
-    
+
     1. Get all Users.
     2. get particular User.
     3. Add a user.
