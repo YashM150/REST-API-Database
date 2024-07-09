@@ -11,14 +11,10 @@ This project is a simple demonstration of how to create a RESTful API using Mysq
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
-- [Other Important Points](#Other Important Points)
+
 
 ## Installation
 ### Postman
-Here's a section for your README file to provide brief information about downloading and configuring Postman to test your API:
-
----
-
 ## Postman Download and Configuration
 
 ### Downloading Postman
