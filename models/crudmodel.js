@@ -32,7 +32,6 @@ const AuthUser={
     },
     AddUser:(user,callback)=>{
         console.log(user[0]);
-       
         return db.query('INSERT INTO demo(name,gender,bloodgroup,username) VALUES (?,?,?,?)',user, (err, result) => {
             if (err) {
               console.error('Error during user creation:', err);
