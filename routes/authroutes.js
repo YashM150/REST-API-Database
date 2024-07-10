@@ -2,6 +2,7 @@ const express = require('express');
 const authController = require('../controllers/authcontroller');
 const  crudController = require('../controllers/crudcontroller');
 const authMiddleware = require('../middleware/authMiddleware');
+
 const router = express.Router();
 
 //Login and registration of the user

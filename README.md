@@ -192,6 +192,7 @@ This setup will help you get MySQL up and running for your project and ensure yo
     npm i express
     npm install express mysql2 jsonwebtoken bcryptjs body-parser
     npm install oauth2-server body-parser
+    npm install express oauth2-server body-parser
 
 
 
