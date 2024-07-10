@@ -74,9 +74,6 @@ Once Postman is installed, follow these steps to configure it for testing your A
 
 ### Installing Workbench
 
-Here's a section for your README file to provide brief information about downloading and configuring MySQL for your project:
-
----
 
 ## MySQL Download and Configuration
 
