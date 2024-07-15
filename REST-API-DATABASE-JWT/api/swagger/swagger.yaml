@@ -8,36 +8,29 @@ servers:
     description: Local server
 
 paths:
+
   /users:
     get:
       summary: Retrieve all users
       description: Fetch a list of all users from the database.
       responses:
         '200':
-          description: A list of users.
+          description: List of users.
           content:
-            application/json:
+            application/json: charset=utf-8
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-    post:
-      summary: Create a new user
-      description: Add a new user to the database.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserInput'
-      responses:
-        '201':
-          description: User created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /users/{id}:
+          X-Powered-By: Express
+          Content-Type: application/json; charset=utf-8
+          Content-Length: 293
+          ETag: W/"125-+2jl2B/c4bVmJIBfaHGHEqWf0dE"
+          Date: Date-Time of the response
+          Connection: keep-alive
+          Keep-Alive: timeout=5
+
+  /user/findUser/{id}:
     get:
       summary: Retrieve a user by ID
       description: Fetch a user from the database by their ID.
@@ -58,6 +51,128 @@ paths:
         '404':
           description: User not found.
 
+  /user/deleteUser/{id}:
+    delete:
+      summary: Delete user by ID
+      description: Delete a user from the database by their ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The user ID.
+      responses:
+        '200':
+          description: A single user deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found.
+
+  /user/UpdateInfoUser/{id}:
+    patch:
+      summary: Update a user by ID partially
+      description: Update a user's info partially from the database by their ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The user ID.
+        requestBody:
+           {
+                "Name":"Name",
+                "gender":"Gender",
+                "bloodgroup": "Blood group"
+            }
+            required: true
+            Authorization: <jwt-token>
+            Content-Type: application/json
+            Accept-Encoding: gzip, deflate, br
+            Connection: keep-alive
+            Content-Length: 102
+        required: true
+        content:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: A single user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found. 
+
+  /user/UpdateInfo/{id}:
+    put:
+      summary: Retrieve a user by ID
+      description: Fetch a user from the database by their ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The user ID.
+          requestBody:
+            {
+                "Name":"Name",
+                "gender":"Gender",
+                "bloodgroup": "Blood group"
+            }
+            required: true
+            Authorization: <jwt-token>
+            Content-Type: application/json
+            Accept-Encoding: gzip, deflate, br
+            Connection: keep-alive
+            Content-Length: 102
+          required: true
+          content:
+              schema:
+                $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: A single user's updation of information.
+          content:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found. 
+
+  /user/AddInfo:
+    post:
+      summary: Add a user's Information
+      description: Add a new user to the database.
+      requestBody:
+          {
+            "name":"name",
+            "gender":"  Gender",
+            "bloodgroup":"Blood group",
+            "username":"Username"
+          }
+        required: true
+        Authorization: <jwt-token>
+        Content-Type: application/json
+        Accept-Encoding: gzip, deflate, br
+        Connection: keep-alive
+        Content-Length: 102
+        content:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
 components:
   schemas:
     User:
@@ -66,18 +181,32 @@ components:
         id:
           type: integer
           example: 1
-        name:
+         name:
           type: string
           example: John Doe
-        email:
+        gender:
           type: string
-          example: john.doe@example.com
+          example: Male
+        bloodgroup:
+          type: string
+          example: ab +/-ve
+        username:
+          type: string
+          example: Yash123       
+
     UserInput:
       type: object
       properties:
         name:
           type: string
           example: John Doe
-        email:
+        gender:
           type: string
-          example: john.doe@example.com
+          example: Male
+        bloodgroup:
+          type: string
+          example: ab +/-ve
+        username:
+          type: string
+          example: Yash123
+
