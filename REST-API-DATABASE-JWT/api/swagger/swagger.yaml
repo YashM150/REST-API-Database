@@ -8,7 +8,6 @@ servers:
     description: Local server
 
 paths:
-
   /users:
     get:
       summary: Retrieve all users
@@ -17,18 +16,11 @@ paths:
         '200':
           description: List of users.
           content:
-            application/json: charset=utf-8
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-          X-Powered-By: Express
-          Content-Type: application/json; charset=utf-8
-          Content-Length: 293
-          ETag: W/"125-+2jl2B/c4bVmJIBfaHGHEqWf0dE"
-          Date: Date-Time of the response
-          Connection: keep-alive
-          Keep-Alive: timeout=5
 
   /user/findUser/{id}:
     get:
@@ -83,20 +75,10 @@ paths:
           schema:
             type: integer
           description: The user ID.
-        requestBody:
-           {
-                "Name":"Name",
-                "gender":"Gender",
-                "bloodgroup": "Blood group"
-            }
-            required: true
-            Authorization: <jwt-token>
-            Content-Type: application/json
-            Accept-Encoding: gzip, deflate, br
-            Connection: keep-alive
-            Content-Length: 102
+      requestBody:
         required: true
         content:
+          application/json:
             schema:
               $ref: '#/components/schemas/UserInput'
       responses:
@@ -107,12 +89,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '404':
-          description: User not found. 
+          description: User not found.
 
   /user/UpdateInfo/{id}:
     put:
-      summary: Retrieve a user by ID
-      description: Fetch a user from the database by their ID.
+      summary: Update a user by ID
+      description: Update a user's info completely from the database by their ID.
       parameters:
         - in: path
           name: id
@@ -120,49 +102,30 @@ paths:
           schema:
             type: integer
           description: The user ID.
-          requestBody:
-            {
-                "Name":"Name",
-                "gender":"Gender",
-                "bloodgroup": "Blood group"
-            }
-            required: true
-            Authorization: <jwt-token>
-            Content-Type: application/json
-            Accept-Encoding: gzip, deflate, br
-            Connection: keep-alive
-            Content-Length: 102
-          required: true
-          content:
-              schema:
-                $ref: '#/components/schemas/UserInput'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
       responses:
         '200':
-          description: A single user's updation of information.
+          description: A single user's updated information.
           content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/User'
         '404':
-          description: User not found. 
+          description: User not found.
 
   /user/AddInfo:
     post:
       summary: Add a user's Information
       description: Add a new user to the database.
       requestBody:
-          {
-            "name":"name",
-            "gender":"  Gender",
-            "bloodgroup":"Blood group",
-            "username":"Username"
-          }
         required: true
-        Authorization: <jwt-token>
-        Content-Type: application/json
-        Accept-Encoding: gzip, deflate, br
-        Connection: keep-alive
-        Content-Length: 102
         content:
+          application/json:
             schema:
               $ref: '#/components/schemas/UserInput'
       responses:
@@ -181,7 +144,7 @@ components:
         id:
           type: integer
           example: 1
-         name:
+        name:
           type: string
           example: John Doe
         gender:
@@ -189,11 +152,10 @@ components:
           example: Male
         bloodgroup:
           type: string
-          example: ab +/-ve
+          example: AB+ve
         username:
           type: string
-          example: Yash123       
-
+          example: Yash123
     UserInput:
       type: object
       properties:
@@ -205,8 +167,7 @@ components:
           example: Male
         bloodgroup:
           type: string
-          example: ab +/-ve
+          example: AB+ve
         username:
           type: string
           example: Yash123
-
