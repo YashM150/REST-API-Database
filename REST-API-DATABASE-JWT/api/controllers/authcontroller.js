@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/usermodels');
-
+require('dotenv').config();
 
 const authController = {
 
@@ -42,7 +42,7 @@ const authController = {
         if (!isMatch) {
           return res.status(401).send('Invalid credentials');
         }
-        const token = jwt.sign({  username: user.username }, JWT_SECRET, {
+        const token = jwt.sign({  username: user.username },"BA_secret_Key", {
           expiresIn: '6h'
         });
 
